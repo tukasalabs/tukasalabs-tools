@@ -1,404 +1,441 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stopwatch & Timer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高機能タイマー</title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", sans-serif;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Segoe UI,sans-serif;
     }
 
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, #2a2a72, transparent 35%),
-        radial-gradient(circle at bottom right, #009ffd, transparent 35%),
-        linear-gradient(135deg, #0f172a, #111827);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 30px;
+    body{
+      min-height:100vh;
+      background:linear-gradient(135deg,#0f172a,#1e293b,#111827);
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
     }
 
-    .container {
-      width: 100%;
-      max-width: 900px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(18px);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 28px;
-      padding: 30px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    .container{
+      width:100%;
+      max-width:700px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.15);
+      backdrop-filter:blur(10px);
+      border-radius:25px;
+      padding:30px;
+      box-shadow:0 10px 40px rgba(0,0,0,0.4);
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 25px;
-      font-size: 2.5rem;
-      letter-spacing: 1px;
+    h1{
+      text-align:center;
+      margin-bottom:25px;
+      font-size:2.3rem;
     }
 
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 30px;
+    .time-inputs{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:15px;
+      margin-bottom:25px;
     }
 
-    .tab {
-      flex: 1;
-      padding: 14px;
-      border: none;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.08);
-      color: white;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: 0.25s;
+    .input-box{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
     }
 
-    .tab.active {
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      transform: scale(1.02);
-      font-weight: bold;
+    .input-box label{
+      color:#cbd5e1;
+      font-size:0.95rem;
     }
 
-    .panel {
-      display: none;
+    .input-box input{
+      padding:14px;
+      border:none;
+      border-radius:14px;
+      background:rgba(255,255,255,0.1);
+      color:white;
+      font-size:1.2rem;
+      text-align:center;
+      outline:none;
     }
 
-    .panel.active {
-      display: block;
+    .input-box input:focus{
+      border:2px solid #38bdf8;
     }
 
-    .time-display {
-      text-align: center;
-      font-size: 5rem;
-      font-weight: bold;
-      margin: 30px 0;
-      letter-spacing: 3px;
+    .display{
+      text-align:center;
+      margin:30px 0;
     }
 
-    .controls {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
+    .timer{
+      font-size:5rem;
+      font-weight:bold;
+      letter-spacing:3px;
     }
 
-    button {
-      border: none;
-      border-radius: 16px;
-      padding: 14px 24px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.2s;
+    .status{
+      margin-top:10px;
+      color:#94a3b8;
     }
 
-    button:hover {
-      transform: translateY(-2px);
+    .progress-container{
+      width:100%;
+      height:18px;
+      background:rgba(255,255,255,0.1);
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:30px;
     }
 
-    .start {
-      background: #22c55e;
-      color: white;
+    .progress-bar{
+      width:0%;
+      height:100%;
+      background:linear-gradient(90deg,#22c55e,#38bdf8);
+      transition:width 0.2s linear;
     }
 
-    .pause {
-      background: #f59e0b;
-      color: white;
+    .buttons{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:center;
+      margin-bottom:25px;
     }
 
-    .reset {
-      background: #ef4444;
-      color: white;
+    button{
+      padding:14px 20px;
+      border:none;
+      border-radius:14px;
+      cursor:pointer;
+      font-size:1rem;
+      font-weight:bold;
+      transition:0.2s;
+      color:white;
     }
 
-    .lap {
-      background: #3b82f6;
-      color: white;
+    button:hover{
+      transform:translateY(-2px);
+      opacity:0.9;
     }
 
-    .laps {
-      margin-top: 25px;
-      max-height: 220px;
-      overflow-y: auto;
-      padding-right: 5px;
+    .start{background:#22c55e;}
+    .pause{background:#f59e0b;}
+    .reset{background:#ef4444;}
+    .save{background:#3b82f6;}
+    .fullscreen{background:#8b5cf6;}
+    .home{background:#14b8a6;}
+
+    .presets{
+      margin-top:20px;
+      background:rgba(255,255,255,0.05);
+      border-radius:16px;
+      padding:15px;
+      max-height:220px;
+      overflow-y:auto;
     }
 
-    .lap-item {
-      background: rgba(255,255,255,0.08);
-      padding: 12px 15px;
-      border-radius: 12px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
+    .preset-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
     }
 
-    .timer-inputs {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
+    .preset-item:last-child{
+      border-bottom:none;
     }
 
-    .timer-inputs input {
-      width: 100px;
-      padding: 14px;
-      border-radius: 14px;
-      border: none;
-      background: rgba(255,255,255,0.1);
-      color: white;
-      text-align: center;
-      font-size: 1.2rem;
+    .preset-item button{
+      padding:8px 12px;
+      font-size:0.9rem;
+      background:#0ea5e9;
     }
 
-    .timer-inputs input::placeholder {
-      color: rgba(255,255,255,0.5);
+    .footer{
+      margin-top:25px;
+      text-align:center;
+      color:#94a3b8;
+      font-size:0.9rem;
     }
 
-    .footer {
-      margin-top: 35px;
-      text-align: center;
-      opacity: 0.7;
-      font-size: 0.9rem;
-    }
+    @media(max-width:600px){
 
-    @media (max-width: 700px) {
-      .time-display {
-        font-size: 3rem;
+      .time-inputs{
+        grid-template-columns:1fr;
       }
 
-      .container {
-        padding: 20px;
+      .timer{
+        font-size:3rem;
+      }
+
+      button{
+        width:100%;
       }
     }
   </style>
 </head>
+
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <h1>⏱ Stopwatch & Timer</h1>
+  <h1>⏳ 高機能タイマー</h1>
 
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('stopwatch')">
-        ストップウォッチ
-      </button>
+  <div class="time-inputs">
 
-      <button class="tab" onclick="switchTab('timer')">
-        タイマー
-      </button>
+    <div class="input-box">
+      <label>時間</label>
+      <input type="number" id="hours" min="0" value="0">
     </div>
 
-    <!-- Stopwatch -->
-    <div id="stopwatch" class="panel active">
-
-      <div class="time-display" id="stopwatchDisplay">
-        00:00:00
-      </div>
-
-      <div class="controls">
-        <button class="start" onclick="startStopwatch()">Start</button>
-        <button class="pause" onclick="pauseStopwatch()">Pause</button>
-        <button class="lap" onclick="lapTime()">Lap</button>
-        <button class="reset" onclick="resetStopwatch()">Reset</button>
-      </div>
-
-      <div class="laps" id="laps"></div>
-
+    <div class="input-box">
+      <label>分</label>
+      <input type="number" id="minutes" min="0" max="59" value="1">
     </div>
 
-    <!-- Timer -->
-    <div id="timer" class="panel">
-
-      <div class="timer-inputs">
-        <input type="number" id="minutes" placeholder="分" min="0">
-        <input type="number" id="seconds" placeholder="秒" min="0" max="59">
-      </div>
-
-      <div class="time-display" id="timerDisplay">
-        00:00
-      </div>
-
-      <div class="controls">
-        <button class="start" onclick="startTimer()">Start</button>
-        <button class="pause" onclick="pauseTimer()">Pause</button>
-        <button class="reset" onclick="resetTimer()">Reset</button>
-      </div>
-
-    </div>
-
-    <div class="footer">
-      Made with HTML / CSS / JavaScript
+    <div class="input-box">
+      <label>秒</label>
+      <input type="number" id="seconds" min="0" max="59" value="0">
     </div>
 
   </div>
 
-  <script>
-    // =========================
-    // TAB
-    // =========================
+  <div class="display">
+    <div class="timer" id="timerDisplay">00:01:00</div>
+    <div class="status" id="status">待機中</div>
+  </div>
 
-    function switchTab(tabId) {
-      document.querySelectorAll(".panel").forEach(panel => {
-        panel.classList.remove("active");
-      });
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
 
-      document.querySelectorAll(".tab").forEach(tab => {
-        tab.classList.remove("active");
-      });
+  <div class="buttons">
 
-      document.getElementById(tabId).classList.add("active");
+    <button class="start" onclick="startTimer()">▶ 開始</button>
 
-      event.target.classList.add("active");
-    }
+    <button class="pause" onclick="pauseTimer()">⏸ 一時停止</button>
 
-    // =========================
-    // STOPWATCH
-    // =========================
+    <button class="reset" onclick="resetTimer()">🔄 リセット</button>
 
-    let stopwatchTime = 0;
-    let stopwatchInterval = null;
-    let lapCount = 1;
+    <button class="save" onclick="savePreset()">💾 保存</button>
 
-    function formatStopwatch(ms) {
-      let totalSeconds = Math.floor(ms / 1000);
+    <button class="fullscreen" onclick="toggleFullscreen()">🖥 全画面</button>
 
-      let minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
-      let seconds = String(totalSeconds % 60).padStart(2, "0");
-      let centiseconds = String(Math.floor((ms % 1000) / 10)).padStart(2, "0");
+    <!-- ホーム画面へ戻る -->
+    <button class="home" onclick="goHome()">🏠 ホームへ戻る</button>
 
-      return `${minutes}:${seconds}:${centiseconds}`;
-    }
+  </div>
 
-    function updateStopwatch() {
-      document.getElementById("stopwatchDisplay").textContent =
-        formatStopwatch(stopwatchTime);
-    }
+  <div class="presets">
+    <h2 style="margin-bottom:10px;">📌 保存プリセット</h2>
 
-    function startStopwatch() {
-      if (stopwatchInterval) return;
+    <div id="presetContainer"></div>
+  </div>
 
-      let lastTime = Date.now();
+  <div class="footer">
+    HTML + CSS + JavaScript のみ使用
+  </div>
 
-      stopwatchInterval = setInterval(() => {
-        const now = Date.now();
-        stopwatchTime += now - lastTime;
-        lastTime = now;
+</div>
 
-        updateStopwatch();
-      }, 10);
-    }
+<script>
 
-    function pauseStopwatch() {
-      clearInterval(stopwatchInterval);
-      stopwatchInterval = null;
-    }
+let totalSeconds = 60;
+let remainingSeconds = totalSeconds;
 
-    function resetStopwatch() {
-      pauseStopwatch();
-      stopwatchTime = 0;
-      lapCount = 1;
+let timerInterval = null;
+let running = false;
 
-      updateStopwatch();
+const timerDisplay = document.getElementById("timerDisplay");
+const progressBar = document.getElementById("progressBar");
+const statusText = document.getElementById("status");
+const presetContainer = document.getElementById("presetContainer");
 
-      document.getElementById("laps").innerHTML = "";
-    }
+function formatTime(seconds){
 
-    function lapTime() {
-      if (stopwatchTime === 0) return;
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
 
-      const laps = document.getElementById("laps");
+  return `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+}
 
-      const div = document.createElement("div");
-      div.className = "lap-item";
+function updateDisplay(){
 
-      div.innerHTML = `
-        <span>Lap ${lapCount}</span>
-        <span>${formatStopwatch(stopwatchTime)}</span>
-      `;
+  timerDisplay.textContent = formatTime(remainingSeconds);
 
-      laps.prepend(div);
+  const progress =
+    ((totalSeconds - remainingSeconds) / totalSeconds) * 100;
 
-      lapCount++;
-    }
+  progressBar.style.width = `${progress}%`;
 
-    // =========================
-    // TIMER
-    // =========================
+  document.title =
+    `${formatTime(remainingSeconds)} - タイマー`;
+}
 
-    let timerInterval = null;
-    let timerRemaining = 0;
+function loadInputTime(){
 
-    function formatTimer(seconds) {
-      let mins = String(Math.floor(seconds / 60)).padStart(2, "0");
-      let secs = String(seconds % 60).padStart(2, "0");
+  const hrs =
+    parseInt(document.getElementById("hours").value) || 0;
 
-      return `${mins}:${secs}`;
-    }
+  const mins =
+    parseInt(document.getElementById("minutes").value) || 0;
 
-    function updateTimerDisplay() {
-      document.getElementById("timerDisplay").textContent =
-        formatTimer(timerRemaining);
-    }
+  const secs =
+    parseInt(document.getElementById("seconds").value) || 0;
 
-    function startTimer() {
+  totalSeconds = hrs * 3600 + mins * 60 + secs;
 
-      if (timerInterval) return;
+  if(totalSeconds <= 0){
 
-      if (timerRemaining <= 0) {
-        const mins = parseInt(document.getElementById("minutes").value) || 0;
-        const secs = parseInt(document.getElementById("seconds").value) || 0;
+    alert("1秒以上を設定してください");
+    return false;
+  }
 
-        timerRemaining = mins * 60 + secs;
+  remainingSeconds = totalSeconds;
 
-        if (timerRemaining <= 0) return;
-      }
+  updateDisplay();
 
-      updateTimerDisplay();
+  return true;
+}
 
-      timerInterval = setInterval(() => {
+function startTimer(){
 
-        timerRemaining--;
+  if(running) return;
 
-        updateTimerDisplay();
+  if(remainingSeconds === totalSeconds){
 
-        if (timerRemaining <= 0) {
-          clearInterval(timerInterval);
-          timerInterval = null;
+    const valid = loadInputTime();
 
-          alert("⏰ タイマー終了！");
-        }
+    if(!valid) return;
+  }
 
-      }, 1000);
-    }
+  running = true;
 
-    function pauseTimer() {
+  statusText.textContent = "タイマー実行中";
+
+  timerInterval = setInterval(()=>{
+
+    remainingSeconds--;
+
+    updateDisplay();
+
+    if(remainingSeconds <= 0){
+
       clearInterval(timerInterval);
-      timerInterval = null;
+
+      running = false;
+
+      remainingSeconds = 0;
+
+      updateDisplay();
+
+      progressBar.style.width = "100%";
+
+      statusText.textContent = "タイマー終了！";
+
+      alert("⏰ タイマー終了！");
     }
 
-    function resetTimer() {
-      pauseTimer();
+  },1000);
+}
 
-      timerRemaining = 0;
+function pauseTimer(){
 
-      updateTimerDisplay();
+  clearInterval(timerInterval);
 
-      document.getElementById("minutes").value = "";
-      document.getElementById("seconds").value = "";
-    }
+  running = false;
 
-    updateStopwatch();
-    updateTimerDisplay();
-  </script>
+  statusText.textContent = "一時停止中";
+}
+
+function resetTimer(){
+
+  clearInterval(timerInterval);
+
+  running = false;
+
+  loadInputTime();
+
+  progressBar.style.width = "0%";
+
+  statusText.textContent = "リセットしました";
+}
+
+function savePreset(){
+
+  const preset = formatTime(totalSeconds);
+
+  const item = document.createElement("div");
+
+  item.className = "preset-item";
+
+  item.innerHTML = `
+    <span>${preset}</span>
+    <button onclick="loadPreset('${preset}')">
+      読み込み
+    </button>
+  `;
+
+  presetContainer.prepend(item);
+}
+
+function loadPreset(time){
+
+  const parts = time.split(":");
+
+  document.getElementById("hours").value =
+    parseInt(parts[0]);
+
+  document.getElementById("minutes").value =
+    parseInt(parts[1]);
+
+  document.getElementById("seconds").value =
+    parseInt(parts[2]);
+
+  resetTimer();
+}
+
+function toggleFullscreen(){
+
+  if(!document.fullscreenElement){
+
+    document.documentElement.requestFullscreen();
+
+  }else{
+
+    document.exitFullscreen();
+  }
+}
+
+function goHome(){
+
+  window.location.href = "home.html";
+}
+
+document.querySelectorAll("input").forEach(input=>{
+
+  input.addEventListener("input",()=>{
+
+    loadInputTime();
+  });
+});
+
+updateDisplay();
+
+</script>
 
 </body>
 </html>
