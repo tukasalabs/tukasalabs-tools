@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>timer | TukasaLabs Tools</title>
+
+  <meta
+    name="description"
+    content="高機能タイマー"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- =========================
+       Header
+  ========================== -->
+
+  <header class="site-header">
+
+    <div class="header-inner">
+
+      <a href="index.html" class="logo">
+        TukasaLabs Tools
+      </a>
+
+      <nav class="top-nav">
+
+        <a href="timer.html">timer</a>
+
+        <a href="text-case.html">
+          text-case
+        </a>
+
+        <a href="json-formatter.html">
+          json-formatter
+        </a>
+
+        <a href="url-encoder.html">
+          url-encoder
+        </a>
+
+        <a href="markdown-preview.html">
+          markdown-preview
+        </a>
+
+        <a href="color-tool.html">
+          color-tool
+        </a>
+
+        <a href="regex-tester.html">
+          regex-tester
+        </a>
+
+        <a href="unit-converter.html">
+          unit-converter
+        </a>
+
+        <a href="password-generator.html">
+          password-generator
+        </a>
+
+        <a href="terms.html">
+          terms
+        </a>
+
+        <a href="privacy.html">
+          privacy
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+  <!-- =========================
+       Layout
+  ========================== -->
+
+  <div class="page-layout">
+
+    <!-- Left Ad -->
+
+    <aside class="ad-space">
+
+      <div class="ad-box">
+        AD SPACE
+      </div>
+
+    </aside>
+
+    <!-- =========================
+         Main Content
+    ========================== -->
+
+    <main class="main-content">
+
+      <section class="tool-container timer-page">
+
+        <h1>
+          timer
+        </h1>
+
+        <p class="tool-description">
+          高機能カウントダウンタイマー
+        </p>
+
+        <!-- =========================
+             Timer Display
+        ========================== -->
+
+        <div class="timer-display" id="timerDisplay">
+          00:00:00
+        </div>
+
+        <!-- =========================
+             Progress Bar
+        ========================== -->
+
+        <div class="progress-wrapper">
+
+          <div
+            class="progress-bar"
+            id="progressBar"
+          ></div>
+
+        </div>
+
+        <!-- =========================
+             Inputs
+        ========================== -->
+
+        <div class="time-inputs">
+
+          <div class="input-group">
+
+            <label>
+              Hours
+            </label>
+
+            <input
+              type="number"
+              id="hours"
+              min="0"
+              max="99"
+              value="0"
+            />
+
+          </div>
+
+          <div class="input-group">
+
+            <label>
+              Minutes
+            </label>
+
+            <input
+              type="number"
+              id="minutes"
+              min="0"
+              max="59"
+              value="5"
+            />
+
+          </div>
+
+          <div class="input-group">
+
+            <label>
+              Seconds
+            </label>
+
+            <input
+              type="number"
+              id="seconds"
+              min="0"
+              max="59"
+              value="0"
+            />
+
+          </div>
+
+        </div>
+
+        <!-- =========================
+             Presets
+        ========================== -->
+
+        <div class="preset-buttons">
+
+          <button onclick="setPreset(60)">
+            1 min
+          </button>
+
+          <button onclick="setPreset(300)">
+            5 min
+          </button>
+
+          <button onclick="setPreset(600)">
+            10 min
+          </button>
+
+          <button onclick="setPreset(1500)">
+            25 min
+          </button>
+
+          <button onclick="setPreset(3600)">
+            1 hour
+          </button>
+
+        </div>
+
+        <!-- =========================
+             Controls
+        ========================== -->
+
+        <div class="control-buttons">
+
+          <button onclick="startTimer()">
+            Start
+          </button>
+
+          <button onclick="pauseTimer()">
+            Pause
+          </button>
+
+          <button onclick="resetTimer()">
+            Reset
+          </button>
+
+        </div>
+
+        <!-- =========================
+             Status
+        ========================== -->
+
+        <div class="timer-status" id="timerStatus">
+
+          Ready
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Right Ad -->
+
+    <aside class="ad-space">
+
+      <div class="ad-box">
+        AD SPACE
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- =========================
+       Footer
+  ========================== -->
+
+  <footer class="site-footer">
+
+    <div class="footer-links">
+
+      <a href="terms.html">
+        利用規約
+      </a>
+
+      <a href="privacy.html">
+        プライバシーポリシー
+      </a>
+
+    </div>
+
+    <p class="copyright">
+      © TukasaLabs Tools
+    </p>
+
+  </footer>
+
+  <!-- =========================
+       Script
+  ========================== -->
+
+  <script>
+
+    let timer;
+    let totalSeconds = 0;
+    let remainingSeconds = 0;
+    let isRunning = false;
+
+    const timerDisplay =
+      document.getElementById("timerDisplay");
+
+    const timerStatus =
+      document.getElementById("timerStatus");
+
+    const progressBar =
+      document.getElementById("progressBar");
+
+    function updateDisplay() {
+
+      const hours =
+        Math.floor(remainingSeconds / 3600);
+
+      const minutes =
+        Math.floor((remainingSeconds % 3600) / 60);
+
+      const seconds =
+        remainingSeconds % 60;
+
+      timerDisplay.textContent =
+        `${String(hours).padStart(2, "0")}:` +
+        `${String(minutes).padStart(2, "0")}:` +
+        `${String(seconds).padStart(2, "0")}`;
+
+      updateProgress();
+
+    }
+
+    function updateProgress() {
+
+      if (totalSeconds === 0) {
+        progressBar.style.width = "0%";
+        return;
+      }
+
+      const progress =
+        (remainingSeconds / totalSeconds) * 100;
+
+      progressBar.style.width =
+        `${progress}%`;
+
+    }
+
+    function startTimer() {
+
+      if (isRunning) return;
+
+      if (remainingSeconds <= 0) {
+
+        const hours =
+          parseInt(document.getElementById("hours").value) || 0;
+
+        const minutes =
+          parseInt(document.getElementById("minutes").value) || 0;
+
+        const seconds =
+          parseInt(document.getElementById("seconds").value) || 0;
+
+        totalSeconds =
+          (hours * 3600) +
+          (minutes * 60) +
+          seconds;
+
+        remainingSeconds = totalSeconds;
+
+      }
+
+      if (remainingSeconds <= 0) {
+        alert("Please enter time.");
+        return;
+      }
+
+      isRunning = true;
+
+      timerStatus.textContent = "Running";
+
+      updateDisplay();
+
+      timer = setInterval(() => {
+
+        remainingSeconds--;
+
+        updateDisplay();
+
+        document.title =
+          `${timerDisplay.textContent} | timer`;
+
+        if (remainingSeconds <= 0) {
+
+          clearInterval(timer);
+
+          isRunning = false;
+
+          timerStatus.textContent =
+            "Finished";
+
+          document.title =
+            "Timer Finished!";
+
+          progressBar.style.width = "0%";
+
+          alert("Time is up!");
+
+        }
+
+      }, 1000);
+
+    }
+
+    function pauseTimer() {
+
+      clearInterval(timer);
+
+      isRunning = false;
+
+      timerStatus.textContent =
+        "Paused";
+
+    }
+
+    function resetTimer() {
+
+      clearInterval(timer);
+
+      isRunning = false;
+
+      totalSeconds = 0;
+      remainingSeconds = 0;
+
+      document.getElementById("hours").value = 0;
+      document.getElementById("minutes").value = 5;
+      document.getElementById("seconds").value = 0;
+
+      timerDisplay.textContent =
+        "00:00:00";
+
+      timerStatus.textContent =
+        "Ready";
+
+      progressBar.style.width = "0%";
+
+      document.title =
+        "timer | TukasaLabs Tools";
+
+    }
+
+    function setPreset(secondsValue) {
+
+      clearInterval(timer);
+
+      isRunning = false;
+
+      totalSeconds = secondsValue;
+      remainingSeconds = secondsValue;
+
+      const hours =
+        Math.floor(secondsValue / 3600);
+
+      const minutes =
+        Math.floor((secondsValue % 3600) / 60);
+
+      const seconds =
+        secondsValue % 60;
+
+      document.getElementById("hours").value =
+        hours;
+
+      document.getElementById("minutes").value =
+        minutes;
+
+      document.getElementById("seconds").value =
+        seconds;
+
+      timerStatus.textContent =
+        "Preset Loaded";
+
+      updateDisplay();
+
+    }
+
+    updateDisplay();
+
+  </script>
+
+</body>
+</html>
