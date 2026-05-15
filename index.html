@@ -3,125 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>TukasaLabs Tools</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <meta
+    name="description"
+    content="軽量で高速なWebツール集"
+  />
 
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom right, #0f172a, #1e293b);
-      color: white;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 900px;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-    }
-
-    p {
-      color: #cbd5e1;
-      margin-bottom: 40px;
-      font-size: 1.1rem;
-    }
-
-    .tools {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 24px;
-      transition: 0.2s ease;
-      backdrop-filter: blur(6px);
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.12);
-    }
-
-    .card h2 {
-      margin-bottom: 12px;
-      font-size: 1.5rem;
-    }
-
-    .card p {
-      font-size: 0.95rem;
-      margin-bottom: 20px;
-      color: #dbeafe;
-    }
-
-    .card a {
-      display: inline-block;
-      text-decoration: none;
-      background: #3b82f6;
-      color: white;
-      padding: 10px 18px;
-      border-radius: 10px;
-      transition: 0.2s ease;
-      font-weight: bold;
-    }
-
-    .card a:hover {
-      background: #2563eb;
-    }
-
-    footer {
-      margin-top: 40px;
-      color: #94a3b8;
-      font-size: 0.9rem;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>TukasaLabs Tools</h1>
-    <p>便利なツールをまとめたサイト</p>
 
-    <div class="tools">
-      <!-- Character Counter -->
-      <div class="card">
-        <h2>Character Counter</h2>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <a href="index.html" class="logo">
+        TukasaLabs Tools
+      </a>
+
+      <nav class="top-nav">
+        <a href="timer.html">Timer</a>
+        <a href="text-case.html">Text Case</a>
+        <a href="json-formatter.html">JSON</a>
+        <a href="url-encoder.html">URL</a>
+        <a href="markdown-preview.html">Markdown</a>
+        <a href="color-tool.html">Color</a>
+        <a href="regex-tester.html">Regex</a>
+        <a href="unit-converter.html">Unit</a>
+        <a href="password-generator.html">Password</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="page-layout">
+
+    <!-- Left Ad -->
+    <aside class="ad-space left-ad">
+      AD SPACE
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <section class="tool-container">
+
+        <h1>Page Title</h1>
+
         <p>
-          文字数をすぐにカウントできるシンプルなツール。
+          ここにツール説明を書きます。
         </p>
 
-        <!-- ↓ ファイル名を自分のものに変更 -->
-        <a href="tools/counter/index.html">開く</a>
-      </div>
+      </section>
 
-      <!-- 新しいツールを追加するときはここをコピー -->
-      <!--
-      <div class="card">
-        <h2>Tool Name</h2>
-        <p>ツールの説明</p>
-        <a href="tool.html">開く</a>
-      </div>
-      -->
+    </main>
+
+    <!-- Right Ad -->
+    <aside class="ad-space right-ad">
+      AD SPACE
+    </aside>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+
+    <div class="footer-links">
+
+      <a href="terms.html">
+        利用規約はこちら
+      </a>
+
+      <a href="privacy.html">
+        プライバシーポリシーはこちら
+      </a>
+
     </div>
 
-    <footer>
-      © 2026 TukasaLabs
-    </footer>
-  </div>
+    <p class="copyright">
+      © TukasaLabs Tools
+    </p>
+
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
