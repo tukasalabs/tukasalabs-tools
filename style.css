@@ -439,3 +439,112 @@ body {
   }
 
 }
+/* =========================
+   Text Case
+========================= */
+
+.text-case-page {
+  background: white;
+
+  padding: 40px;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 2px 10px rgba(0,0,0,0.05);
+}
+
+.section-label {
+  display: block;
+
+  margin-top: 24px;
+  margin-bottom: 12px;
+
+  font-weight: bold;
+}
+
+.text-case-page textarea {
+  min-height: 220px;
+}
+
+/* =========================
+   Buttons
+========================= */
+
+.case-buttons {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(180px, 1fr));
+
+  gap: 14px;
+
+  margin-top: 20px;
+}
+
+.action-buttons {
+  display: flex;
+
+  gap: 14px;
+
+  margin-top: 20px;
+}
+
+.action-buttons button {
+  flex: 1;
+}
+
+/* =========================
+   Stats
+========================= */
+
+.text-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(160px, 1fr));
+
+  gap: 16px;
+
+  margin-top: 30px;
+}
+
+.stat-card {
+  background: #f7f7f7;
+
+  padding: 20px;
+
+  border-radius: 14px;
+
+  text-align: center;
+}
+
+.stat-title {
+  display: block;
+
+  color: #666;
+
+  margin-bottom: 10px;
+}
+
+.stat-value {
+  font-size: 28px;
+
+  font-weight: bold;
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 768px) {
+
+  .text-case-page {
+    padding: 24px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+}
