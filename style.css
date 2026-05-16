@@ -446,29 +446,95 @@ body {
 .text-case-page {
   background: white;
 
-  padding: 40px;
+  border-radius: 24px;
 
-  border-radius: 18px;
+  padding: 42px;
 
   box-shadow:
-    0 2px 10px rgba(0,0,0,0.05);
+    0 10px 30px rgba(0,0,0,0.04);
+
+  border:
+    1px solid rgba(0,0,0,0.04);
 }
+
+/* =========================
+   Header
+========================= */
+
+.text-case-page h1 {
+  margin-top: 0;
+
+  font-size: 42px;
+
+  letter-spacing: -1px;
+}
+
+.tool-description {
+  color: #666;
+
+  font-size: 17px;
+
+  margin-bottom: 36px;
+
+  line-height: 1.7;
+}
+
+/* =========================
+   Section Label
+========================= */
 
 .section-label {
   display: block;
 
-  margin-top: 24px;
   margin-bottom: 12px;
+  margin-top: 28px;
 
-  font-weight: bold;
-}
+  font-size: 15px;
+  font-weight: 600;
 
-.text-case-page textarea {
-  min-height: 220px;
+  color: #444;
 }
 
 /* =========================
-   Buttons
+   Textarea
+========================= */
+
+.text-case-page textarea {
+  width: 100%;
+
+  min-height: 220px;
+
+  border:
+    1px solid #dcdcdc;
+
+  border-radius: 18px;
+
+  padding: 20px;
+
+  font-size: 16px;
+
+  line-height: 1.8;
+
+  resize: vertical;
+
+  background: #fafafa;
+
+  transition: 0.2s;
+}
+
+.text-case-page textarea:focus {
+  outline: none;
+
+  border-color: #111;
+
+  background: white;
+
+  box-shadow:
+    0 0 0 4px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   Button Grid
 ========================= */
 
 .case-buttons {
@@ -479,15 +545,52 @@ body {
 
   gap: 14px;
 
-  margin-top: 20px;
+  margin-top: 24px;
 }
+
+/* =========================
+   Buttons
+========================= */
+
+.case-buttons button,
+.action-buttons button {
+
+  border: none;
+
+  border-radius: 16px;
+
+  padding: 15px 18px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  background: #111;
+
+  color: white;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.case-buttons button:hover,
+.action-buttons button:hover {
+
+  transform: translateY(-2px);
+
+  opacity: 0.95;
+}
+
+/* =========================
+   Action Buttons
+========================= */
 
 .action-buttons {
   display: flex;
 
   gap: 14px;
 
-  margin-top: 20px;
+  margin-top: 22px;
 }
 
 .action-buttons button {
@@ -504,19 +607,29 @@ body {
   grid-template-columns:
     repeat(auto-fit, minmax(160px, 1fr));
 
-  gap: 16px;
+  gap: 18px;
 
-  margin-top: 30px;
+  margin-top: 36px;
 }
 
 .stat-card {
-  background: #f7f7f7;
+  background: linear-gradient(
+    180deg,
+    #ffffff,
+    #f7f7f7
+  );
 
-  padding: 20px;
+  border-radius: 20px;
 
-  border-radius: 14px;
+  padding: 24px;
 
   text-align: center;
+
+  border:
+    1px solid rgba(0,0,0,0.05);
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.03);
 }
 
 .stat-title {
@@ -524,13 +637,17 @@ body {
 
   color: #666;
 
-  margin-bottom: 10px;
+  font-size: 14px;
+
+  margin-bottom: 12px;
 }
 
 .stat-value {
-  font-size: 28px;
+  font-size: 34px;
 
   font-weight: bold;
+
+  letter-spacing: -1px;
 }
 
 /* =========================
@@ -541,6 +658,10 @@ body {
 
   .text-case-page {
     padding: 24px;
+  }
+
+  .text-case-page h1 {
+    font-size: 34px;
   }
 
   .action-buttons {
