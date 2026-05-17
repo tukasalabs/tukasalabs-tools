@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>json-formatter | TukasaLabs Tools</title>
+
+  <meta
+    name="description"
+    content="JSONを整形・圧縮・検証できる高機能JSON Formatter"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- =========================
+       Header
+  ========================== -->
+
+  <header class="site-header">
+    <div class="header-inner">
+
+      <a href="index.html" class="logo">
+        TukasaLabs Tools
+      </a>
+
+      <nav class="top-nav">
+        <a href="timer.html">timer</a>
+        <a href="text-case.html">text-case</a>
+        <a href="json-formatter.html">json-formatter</a>
+        <a href="url-encoder.html">url-encoder</a>
+        <a href="markdown-preview.html">markdown-preview</a>
+        <a href="color-tool.html">color-tool</a>
+        <a href="regex-tester.html">regex-tester</a>
+        <a href="unit-converter.html">unit-converter</a>
+        <a href="password-generator.html">password-generator</a>
+        <a href="terms.html">terms</a>
+        <a href="privacy.html">privacy</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- =========================
+       Layout
+  ========================== -->
+
+  <div class="page-layout">
+
+    <!-- Left Ad -->
+
+    <aside class="ad-space">
+      <div class="ad-box">
+        AD SPACE
+      </div>
+    </aside>
+
+    <!-- =========================
+         Main
+    ========================== -->
+
+    <main class="main-content">
+
+      <section class="json-page">
+
+        <!-- =========================
+             Hero
+        ========================== -->
+
+        <div class="json-hero">
+
+          <span class="json-badge">
+            JSON TOOL
+          </span>
+
+          <h1>JSON Formatter</h1>
+
+          <p>
+            JSONの整形・圧縮・検証・コピーを
+            ブラウザだけで実行できる軽量ツールです。
+          </p>
+
+        </div>
+
+        <!-- =========================
+             Main Tool
+        ========================== -->
+
+        <div class="json-tool">
+
+          <!-- Left -->
+
+          <div class="json-panel">
+
+            <div class="panel-header">
+              <h2>Input JSON</h2>
+
+              <button id="pasteBtn">
+                Paste
+              </button>
+            </div>
+
+            <textarea
+              id="jsonInput"
+              placeholder='{
+  "name": "TukasaLabs",
+  "tools": ["timer", "json"]
+}'
+            ></textarea>
+
+          </div>
+
+          <!-- Right -->
+
+          <div class="json-panel">
+
+            <div class="panel-header">
+              <h2>Output</h2>
+
+              <button id="copyBtn">
+                Copy
+              </button>
+            </div>
+
+            <textarea
+              id="jsonOutput"
+              readonly
+              placeholder="Formatted JSON..."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+        <!-- =========================
+             Buttons
+        ========================== -->
+
+        <div class="json-buttons">
+
+          <button id="formatBtn">
+            Format JSON
+          </button>
+
+          <button id="minifyBtn">
+            Minify JSON
+          </button>
+
+          <button id="validateBtn">
+            Validate JSON
+          </button>
+
+          <button id="clearBtn">
+            Clear
+          </button>
+
+        </div>
+
+        <!-- =========================
+             Options
+        ========================== -->
+
+        <div class="json-options">
+
+          <div class="option-box">
+
+            <label for="indentSize">
+              Indent Size
+            </label>
+
+            <select id="indentSize">
+              <option value="2">2 Spaces</option>
+              <option value="4" selected>4 Spaces</option>
+              <option value="8">8 Spaces</option>
+            </select>
+
+          </div>
+
+        </div>
+
+        <!-- =========================
+             Status
+        ========================== -->
+
+        <div id="jsonStatus" class="json-status">
+          Ready
+        </div>
+
+        <!-- =========================
+             Stats
+        ========================== -->
+
+        <div class="json-stats">
+
+          <div class="json-stat-card">
+            <span class="json-stat-title">
+              Characters
+            </span>
+
+            <span class="json-stat-value" id="charCount">
+              0
+            </span>
+          </div>
+
+          <div class="json-stat-card">
+            <span class="json-stat-title">
+              Lines
+            </span>
+
+            <span class="json-stat-value" id="lineCount">
+              0
+            </span>
+          </div>
+
+          <div class="json-stat-card">
+            <span class="json-stat-title">
+              Size
+            </span>
+
+            <span class="json-stat-value" id="sizeCount">
+              0 KB
+            </span>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Right Ad -->
+
+    <aside class="ad-space">
+      <div class="ad-box">
+        AD SPACE
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- =========================
+       Footer
+  ========================== -->
+
+  <footer class="site-footer">
+
+    <div class="footer-links">
+      <a href="terms.html">利用規約</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+    </div>
+
+    <p class="copyright">
+      © TukasaLabs Tools
+    </p>
+
+  </footer>
+
+  <!-- =========================
+       Script
+  ========================== -->
+
+  <script>
+
+    const jsonInput =
+      document.getElementById("jsonInput");
+
+    const jsonOutput =
+      document.getElementById("jsonOutput");
+
+    const jsonStatus =
+      document.getElementById("jsonStatus");
+
+    const indentSize =
+      document.getElementById("indentSize");
+
+    const charCount =
+      document.getElementById("charCount");
+
+    const lineCount =
+      document.getElementById("lineCount");
+
+    const sizeCount =
+      document.getElementById("sizeCount");
+
+    const formatBtn =
+      document.getElementById("formatBtn");
+
+    const minifyBtn =
+      document.getElementById("minifyBtn");
+
+    const validateBtn =
+      document.getElementById("validateBtn");
+
+    const clearBtn =
+      document.getElementById("clearBtn");
+
+    const copyBtn =
+      document.getElementById("copyBtn");
+
+    const pasteBtn =
+      document.getElementById("pasteBtn");
+
+    /* =========================
+       Update Stats
+    ========================== */
+
+    function updateStats(text) {
+
+      const chars = text.length;
+
+      const lines =
+        text.split("\n").length;
+
+      const kb =
+        (chars / 1024).toFixed(2);
+
+      charCount.textContent = chars;
+
+      lineCount.textContent = lines;
+
+      sizeCount.textContent =
+        `${kb} KB`;
+
+    }
+
+    /* =========================
+       Format
+    ========================== */
+
+    function formatJSON() {
+
+      try {
+
+        const parsed =
+          JSON.parse(jsonInput.value);
+
+        const formatted =
+          JSON.stringify(
+            parsed,
+            null,
+            Number(indentSize.value)
+          );
+
+        jsonOutput.value =
+          formatted;
+
+        jsonStatus.textContent =
+          "JSON formatted successfully";
+
+        jsonStatus.className =
+          "json-status success";
+
+        updateStats(formatted);
+
+      }
+
+      catch (error) {
+
+        jsonStatus.textContent =
+          "Invalid JSON";
+
+        jsonStatus.className =
+          "json-status error";
+
+      }
+
+    }
+
+    /* =========================
+       Minify
+    ========================== */
+
+    function minifyJSON() {
+
+      try {
+
+        const parsed =
+          JSON.parse(jsonInput.value);
+
+        const minified =
+          JSON.stringify(parsed);
+
+        jsonOutput.value =
+          minified;
+
+        jsonStatus.textContent =
+          "JSON minified successfully";
+
+        jsonStatus.className =
+          "json-status success";
+
+        updateStats(minified);
+
+      }
+
+      catch {
+
+        jsonStatus.textContent =
+          "Invalid JSON";
+
+        jsonStatus.className =
+          "json-status error";
+
+      }
+
+    }
+
+    /* =========================
+       Validate
+    ========================== */
+
+    function validateJSON() {
+
+      try {
+
+        JSON.parse(jsonInput.value);
+
+        jsonStatus.textContent =
+          "Valid JSON";
+
+        jsonStatus.className =
+          "json-status success";
+
+      }
+
+      catch (error) {
+
+        jsonStatus.textContent =
+          error.message;
+
+        jsonStatus.className =
+          "json-status error";
+
+      }
+
+    }
+
+    /* =========================
+       Clear
+    ========================== */
+
+    function clearJSON() {
+
+      jsonInput.value = "";
+
+      jsonOutput.value = "";
+
+      jsonStatus.textContent =
+        "Cleared";
+
+      jsonStatus.className =
+        "json-status";
+
+      updateStats("");
+
+    }
+
+    /* =========================
+       Copy
+    ========================== */
+
+    async function copyOutput() {
+
+      if (!jsonOutput.value) return;
+
+      await navigator.clipboard.writeText(
+        jsonOutput.value
+      );
+
+      jsonStatus.textContent =
+        "Copied to clipboard";
+
+      jsonStatus.className =
+        "json-status success";
+
+    }
+
+    /* =========================
+       Paste
+    ========================== */
+
+    async function pasteInput() {
+
+      const text =
+        await navigator.clipboard.readText();
+
+      jsonInput.value = text;
+
+      updateStats(text);
+
+    }
+
+    /* =========================
+       Events
+    ========================== */
+
+    formatBtn.addEventListener(
+      "click",
+      formatJSON
+    );
+
+    minifyBtn.addEventListener(
+      "click",
+      minifyJSON
+    );
+
+    validateBtn.addEventListener(
+      "click",
+      validateJSON
+    );
+
+    clearBtn.addEventListener(
+      "click",
+      clearJSON
+    );
+
+    copyBtn.addEventListener(
+      "click",
+      copyOutput
+    );
+
+    pasteBtn.addEventListener(
+      "click",
+      pasteInput
+    );
+
+    jsonInput.addEventListener(
+      "input",
+      () => {
+        updateStats(jsonInput.value);
+      }
+    );
+
+  </script>
+
+</body>
+</html>
